@@ -5,6 +5,9 @@ import time
 import schedule
 import multiprocessing
 import smtplib
+import tests.calendar_test as testin
+import unittest
+import importlib
 
 
 # 0.1
@@ -21,9 +24,10 @@ import smtplib
 #       store passwords and email as env var or conf file
 # clean everything, includes refactoring to PEP 8, and moving functions to libraries
 # tests for everything
-# cancel ortex
-# git acct and first commit... make private
+#       cancel ortex... not my concern now, may have some use in stock utilization, but not my concern now
+#       git acct and first commit... make private
 # start aws, delay this, cost is a concern, in meantime research other cloud providers
+# create a notes file transcribe a lot of what gherk said and add a todo
 
 # 0.2
 # free account for https://polygon.io/, may later move to https://eodhistoricaldata.com/
@@ -60,6 +64,8 @@ import smtplib
 # if stuck with auth https://stackoverflow.com/questions/25944883/how-to-send-an-email-through-gmail-without-enabling-insecure-access
 # auth problems often resolved here https://console.cloud.google.com/apis/credentials
 
+# TIME: it is important to note that unless displayed, ALL times MUST BE SET to UTC
+
 
 class Option:
     def __init__(self, date, strike, price):
@@ -70,9 +76,11 @@ class Option:
 
 def check_data_caches():
     path = 'cached_data/nyse_holidays/'
-    ext = '.txt'
-    cal.check_holiday_cache(path, ext)
-    holidays = cal.read_holidays(path, ext)
+    ext = 'txt'
+    current_year = var.current_year
+    next_year = var.next_year
+    cal.check_holiday_cache(path, ext, current_year, next_year)
+    holidays = cal.read_holidays(path, ext, current_year, next_year)
     var.set_holidays(holidays)
 
 
@@ -138,26 +146,31 @@ def send_email(email):
 # once a day should either be a thread or just throw it in the main loop
 # main loop will call schedule.run_pending() whenever done the loop
 # schedule.every().day.at("01:00").do(job,'It is 01:00') will be in init once
+# if __name__ == '__main__':
+#     print('working')
+#     on_launch()
+#     cal.is_business_hours(datetime.today().utcnow())
+#     # multiprocessing does not seem to like two schedules running within the process
+#     # multiprocessing will likely be useful for optimization of greeks
+#     # multithreading will likely be more useful from an interface perspective
+#     # I don't think either are really needed right now...  keep a demo commented out
+#     p1 = multiprocessing.Process(target=sleepy_man)
+#     p2 = multiprocessing.Process(target=sleepy_man)
+#     p1.start()
+#     p2.start()
+#     # p1.join() # use join to wait before the main process proceeds
+#     # p2.join()
+#     # the example here: the long datetime is a string "13:30"
+#     schedule.every().day.at(datetime.strptime('13:30', var.time_format).replace(tzinfo=timezone.utc).strftime(var.time_format)).do(once_a_day)
+#     schedule.run_pending()
+#     print('past pending')
+#     # once_a_day()
+#
+#     send_email(var.user_email)
+#
+#     time_loop(60)
+
+
 if __name__ == '__main__':
-    print('working')
-    on_launch()
-    cal.is_business_hours(datetime.today().utcnow())
-    # multiprocessing does not seem to like two schedules running within the process
-    # multiprocessing will likely be useful for optimization of greeks
-    # multithreading will likely be more useful from an interface perspective
-    # I don't think either are really needed right now...  keep a demo commented out
-    p1 = multiprocessing.Process(target=sleepy_man)
-    p2 = multiprocessing.Process(target=sleepy_man)
-    p1.start()
-    p2.start()
-    # p1.join() # use join to wait before the main process proceeds
-    # p2.join()
-    # the example here: the long datetime is a string "13:30"
-    schedule.every().day.at(datetime.strptime('13:30', var.time_format).replace(tzinfo=timezone.utc).strftime(var.time_format)).do(once_a_day)
-    schedule.run_pending()
-    print('past pending')
-    # once_a_day()
-
-    send_email(var.user_email)
-
-    time_loop(60)
+    mod = importlib.import_module('.calendar_test', package='tests')
+    unittest.main(module=mod)  # this is how to call tests

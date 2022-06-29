@@ -17,14 +17,16 @@ user = 'cearle'
 user_email = 'chris.g.earle@gmail.com'
 
 
-
 def set_holidays(h_dict):
-    global holidays_dict
-    holidays_dict = h_dict
-    holiday_years = list(h_dict)
-    all_holidays_arr = []
-    for yr in holiday_years:
-        holidays_for_yr = list(h_dict.get(yr).values())
-        all_holidays_arr += holidays_for_yr
-    global holidays_list
-    holidays_list = all_holidays_arr
+    try:
+        global holidays_dict
+        holidays_dict = h_dict
+        holiday_years = list(h_dict)
+        all_holidays_arr = []
+        for yr in holiday_years:
+            holidays_for_yr = list(h_dict.get(yr).values())
+            all_holidays_arr += holidays_for_yr
+        global holidays_list
+        holidays_list = all_holidays_arr
+    except Exception as e:
+        print(e)
