@@ -22,7 +22,7 @@ class Test(unittest.TestCase):
         except Exception as e:
             print(e)
 
-    # TODO: tests should run as a new instance, this seems more like a bridge you will cross when deploying to the cloud
+    # next: tests should run as a new instance, this seems more like a bridge you will cross when deploying to the cloud
     def test_business_hours(self):
         try:
             test_current_year = '2022'

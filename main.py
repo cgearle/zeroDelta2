@@ -27,7 +27,7 @@ import importlib
 #       cancel ortex... not my concern now, may have some use in stock utilization, but not my concern now
 #       git acct and first commit... make private
 # start aws, delay this, cost is a concern, in meantime research other cloud providers
-# create a notes file transcribe a lot of what gherk said and add a todo
+# create a notes file transcribe a lot of what gherk said and add a to-do
 
 # 0.2
 # free account for https://polygon.io/, may later move to https://eodhistoricaldata.com/
